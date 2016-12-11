@@ -54,13 +54,13 @@ def ndk_build(args):
                  'NDK_DEBUG=' + isDebug,
                  'V=0']
     # Print the build command
-    print PrintColors.UNDERLINE + 'ndk build arguments:' + str(build_cmd) + PrintColors.ENDC
-    ret = subprocess.call(build_cmd)
+    print(PrintColors.UNDERLINE + 'ndk build arguments:' + str(build_cmd) + PrintColors.ENDC)
+    ret = subprocess.call(build_cmd, shell=True)
     if ret is not 0:
-        print PrintColors.FAIL + 'Build Error' + PrintColors.ENDC
+        print(PrintColors.FAIL + 'Build Error' + PrintColors.ENDC)
         os.sys.exit(1)
     else:
-        print PrintColors.OKBLUE + 'Build Pass' + PrintColors.ENDC
+        print(PrintColors.OKBLUE + 'Build Pass' + PrintColors.ENDC)
 
 
 def ndk_clean():
@@ -70,7 +70,7 @@ def ndk_clean():
 def setDeviceABI():
     global DEVICE_ABI
     p = subprocess.Popen(
-        ['adb', 'shell', 'getprop', 'ro.product.cpu.abi'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        ['adb', 'shell', 'getprop', 'ro.product.cpu.abi'], stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
     output, err = p.communicate(
         b"input data that is passed to subprocess' stdin")
     rc = p.returncode
@@ -78,41 +78,41 @@ def setDeviceABI():
         if "x86" in output:
             DEVICE_ABI = 'x86'
 
-    print PrintColors.OKBLUE + 'We will use ABI:' + DEVICE_ABI + ' binaries to test ' + PrintColors.ENDC
+    print(PrintColors.OKBLUE + 'We will use ABI:' + DEVICE_ABI + ' binaries to test ' + PrintColors.ENDC)
 
 
 def test():
     global DEVICE_ABI
     # Test max_cost_assignment_ex daemon example
-    print '----max_cost_assignment_ex daemon test'
-    print '----Push svm_ex to phone device'
+    print('----max_cost_assignment_ex daemon test')
+    print('----Push svm_ex to phone device')
     srcFolder = os.path.join('libs', DEVICE_ABI, 'max_cost_assignment_ex')
     subprocess.call(['adb', 'push', srcFolder, '/data/local/tmp'])
-    print '----Execute /data/local/tmp/max_cost_assignment_ex'
+    print('----Execute /data/local/tmp/max_cost_assignment_ex')
     subprocess.call(['adb', 'shell', './data/local/tmp/max_cost_assignment_ex'])
 
-    print '\n\n'
-    print 'Test dlib selective search'
-    print '----selective search algorithm'
+    print('\n\n')
+    print('Test dlib selective search')
+    print('----selective search algorithm')
     srcFolder = os.path.join('data', 'lena.jpg')
-    print '----Push test image to data/local/tmp'
+    print('----Push test image to data/local/tmp')
     subprocess.call(['adb', 'push', srcFolder, '/data/local/tmp/lena.jpg'])
-    print '----Push daemon to /data/local/tmp'
+    print('----Push daemon to /data/local/tmp')
     srcFolder = os.path.join('libs', DEVICE_ABI, 'TestSelectiveSearch')
     subprocess.call(['adb', 'push', srcFolder, '/data/local/tmp'])
-    print '----Execute /data/local/tmp/TestSelectiveSearch'
+    print('----Execute /data/local/tmp/TestSelectiveSearch')
     subprocess.call(
         ['adb', 'shell', './data/local/tmp/TestSelectiveSearch', '/data/local/tmp/lena.jpg'])
 
-    print '\n\n'
-    print 'Test face landmark'
+    print('\n\n')
+    print('Test face landmark')
     srcFolder = os.path.join('data', 'lena.bmp')
     subprocess.call(['adb', 'push', srcFolder, '/data/local/tmp'])
     srcFolder = os.path.join('data', 'shape_predictor_68_face_landmarks.dat')
     subprocess.call(['adb', 'push', srcFolder, '/data/local/tmp'])
     srcFolder = os.path.join('libs', DEVICE_ABI, 'face_landmark')
     subprocess.call(['adb', 'push', srcFolder, '/data/local/tmp'])
-    print '----Execute /data/local/tmp/face_lanmark'
+    print('----Execute /data/local/tmp/face_lanmark')
     subprocess.call(['adb', 'shell', './data/local/tmp/face_landmark',
                     '/data/local/tmp/shape_predictor_68_face_landmarks.dat', '/data/local/tmp/lena.bmp'])
 

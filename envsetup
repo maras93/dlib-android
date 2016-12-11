@@ -22,7 +22,7 @@ def unzipFile(filename):
     zfile = zipfile.ZipFile(filename)
     for name in zfile.namelist():
         (dirname, filename) = os.path.split(name)
-        print "Decompressing " + filename + " on " + dirname
+        print("Decompressing " + filename + " on " + dirname)
         zfile.extract(name)
 
 
@@ -106,18 +106,18 @@ def downloadPrebuiltOpencv(prefix='.', out_prefix='.', version='3.1.0'):
 
 
 def sync_submodules():
-    print '---------------- Start syncing submodules ----------------'
+    print('---------------- Start syncing submodules ----------------')
     # Fetch submodules
     global ROOT
     os.chdir(ROOT)
     call(['git', 'submodule', 'update', '--init', '--recursive'])
 
-    print 'download prebuilt opencv for android'
+    print('download prebuilt opencv for android')
     prebuilt_path = os.path.join(ROOT, 'third_party')
     prebuilt_opencv_out = prebuilt_path
     downloadPrebuiltOpencv(
         prefix=prebuilt_path, out_prefix=prebuilt_opencv_out)
-    print '---------------- End   syncing submodules ----------------'
+    print('---------------- End   syncing submodules ----------------')
 
 
 def main(argv):
