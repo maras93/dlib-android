@@ -177,7 +177,7 @@ class DLibHOGFaceDetector : public DLibHOGDetector {
   virtual inline int det(const cv::Mat& image) {
     if (image.empty())
       return 0;
-    LOG(INFO) << "com_tzutalin_dlib_PeopleDet go to det(mat)";
+    //LOG(INFO) << "com_tzutalin_dlib_PeopleDet go to det(mat)";
     if (image.channels() == 1) {
       cv::cvtColor(image, image, CV_GRAY2BGR);
     }
@@ -186,14 +186,14 @@ class DLibHOGFaceDetector : public DLibHOGDetector {
     // It's unnecessary to use color image for face/landmark detection
     dlib::cv_image<dlib::bgr_pixel> img(image);
     mRets = mFaceDetector(img);
-    LOG(INFO) << "Dlib HOG face det size : " << mRets.size();
+    //LOG(INFO) << "Dlib HOG face det size : " << mRets.size();
     mFaceShapeMap.clear();
     // Process shape
     if (mRets.size() != 0 && mLandMarkModel.empty() == false) {
       for (unsigned long j = 0; j < mRets.size(); ++j) {
         dlib::full_object_detection shape = msp(img, mRets[j]);
-        LOG(INFO) << "face index:" << j
-                  << "number of parts: " << shape.num_parts();
+        //LOG(INFO) << "face index:" << j
+        //          << "number of parts: " << shape.num_parts();
         mFaceShapeMap[j] = shape;
       }
     }

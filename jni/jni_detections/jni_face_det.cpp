@@ -92,7 +92,7 @@ void JNIEXPORT
 
 jobjectArray getDetectResult(JNIEnv* env, DetectorPtr faceDetector,
                              const int& size) {
-  LOG(INFO) << "getFaceRet";
+  //LOG(INFO) << "getFaceRet";
   jobjectArray jDetRetArray = JNI_VisionDetRet::createJObjectArray(env, size);
   for (int i = 0; i < size; i++) {
     jobject jDetRet = JNI_VisionDetRet::createJObject(env);
@@ -131,7 +131,7 @@ JNIEXPORT jobjectArray JNICALL
 JNIEXPORT jobjectArray JNICALL
     DLIB_FACE_JNI_METHOD(jniBitmapDetect)(JNIEnv* env, jobject thiz,
                                           jobject bitmap) {
-  LOG(INFO) << "jniBitmapFaceDet";
+  //LOG(INFO) << "jniBitmapFaceDet";
   cv::Mat rgbaMat;
   cv::Mat bgrMat;
   jniutils::ConvertBitmapToRGBAMat(env, bitmap, rgbaMat, true);
@@ -143,7 +143,7 @@ JNIEXPORT jobjectArray JNICALL
   cv::cvtColor(bgrMat, rgbMat, cv::COLOR_BGR2RGB);
   cv::imwrite("/sdcard/ret.jpg", rgbaMat);
 #endif
-  LOG(INFO) << "det face size: " << size;
+  //LOG(INFO) << "det face size: " << size;
   return getDetectResult(env, detPtr, size);
 }
 
